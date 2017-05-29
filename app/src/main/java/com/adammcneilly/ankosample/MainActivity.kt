@@ -1,25 +1,43 @@
 package com.adammcneilly.ankosample
 
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
+import android.support.design.widget.AppBarLayout
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import com.adammcneilly.ankosample.R.attr.colorPrimary
+import org.jetbrains.anko.*
+import org.jetbrains.anko.appcompat.v7.toolbar
+import org.jetbrains.anko.design.coordinatorLayout
+import org.jetbrains.anko.design.floatingActionButton
+import org.jetbrains.anko.design.themedAppBarLayout
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
 
-        val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+        coordinatorLayout {
+            themedAppBarLayout(theme = R.style.AppTheme_AppBarOverlay) {
+                toolbar {
+                    backgroundColor = colorPrimary
+                    popupTheme = R.style.AppTheme_PopupOverlay
+                }.let { setSupportActionBar(it) }
+            }.lparams(width = matchParent)
+
+            relativeLayout {
+                textView("Hello World")
+            }.lparams(width = matchParent, height = matchParent) {
+                behavior = AppBarLayout.ScrollingViewBehavior()
+            }
+
+            floatingActionButton {
+                imageResource = android.R.drawable.ic_dialog_email
+            }.lparams {
+                margin = resources.getDimensionPixelSize(R.dimen.fab_margin)
+                gravity = Gravity.BOTTOM or Gravity.END
+            }
         }
     }
 
